@@ -80,20 +80,23 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(CTest)
 
 find_package(Threads REQUIRED)
-find_package(ROCM 0.7.3 REQUIRED PATHS /opt/rocm)
 
+find_package(ROCmCMakeBuildTools)
 include(ROCMInstallTargets)
 include(ROCMPackageConfigHelpers)
 include(ROCMSetupVersion)
 include(ROCMInstallSymlinks)
 include(ROCMCreatePackage)
-include(CheckCXXCompilerFlag)
 include(ROCMHeaderWrapper)
 
+include(CheckCXXCompilerFlag)
 include(cmake/ClangCheck.cmake)
 
 # Build library with Beta APIs
 add_definitions("-DMIOPEN_BETA_API=1")
+
+# By default build shared libraries
+option(BUILD_SHARED_LIBS "Create shared libraries" ON)
 
 set(MIOPEN_ENABLE_AI_IMMED_MODE_FALLBACK On CACHE BOOL "Enable AI-based fallback for Immediate Mode")
 set(MIOPEN_ENABLE_AI_KERNEL_TUNING On CACHE BOOL "Enable AI heuristic for kernel tuning")
@@ -101,23 +104,20 @@ set(MIOPEN_ENABLE_SQLITE On CACHE BOOL "")
 # Use SQLITE for compiled kernels, when turned off this will use raw files
 set(MIOPEN_ENABLE_SQLITE_KERN_CACHE On CACHE BOOL "")
 
-# By default build shared libraries
-option(BUILD_SHARED_LIBS "Create shared libraries" ON)
-
 if(MIOPEN_ENABLE_SQLITE)
-    # MIOpen now depends on SQLite as well
-    find_package(SQLite3 REQUIRED)
+  find_package(BZip2 REQUIRED)
+  find_package(nlohmann_json 3.9.1 REQUIRED)
+# MIOpen now depends on SQLite as well
+  find_package(SQLite3 REQUIRED)
 endif()
-find_package(BZip2 REQUIRED)
-find_package(nlohmann_json 3.9.1 REQUIRED)
-if(MIOPEN_ENABLE_SQLITE_KERN_CACHE AND NOT MIOPEN_ENABLE_SQLITE)
-    message(FATAL_ERROR "MIOPEN_ENABLE_SQLITE_KERN_CACHE requires MIOPEN_ENABLE_SQLITE")
-endif()
+#if(MIOPEN_ENABLE_SQLITE_KERN_CACHE AND NOT MIOPEN_ENABLE_SQLITE)
+#    message(FATAL_ERROR "MIOPEN_ENABLE_SQLITE_KERN_CACHE requires MIOPEN_ENABLE_SQLITE")
+#endif()
 set(MIOPEN_LOG_FUNC_TIME_ENABLE Off CACHE BOOL "")
 set(MIOPEN_ENABLE_SQLITE_BACKOFF On CACHE BOOL "")
 
-option( BUILD_DEV "Build for development only" OFF)
-option(MIOPEN_ENABLE_FIN "Enable the fin driver for MIOpen"  OFF)
+option(BUILD_DEV "Build for development only" OFF)
+option(MIOPEN_ENABLE_FIN "Enable the fin driver for MIOpen" OFF)
 option(MIOPEN_ENABLE_FIN_INTERFACE "Enable internal interface for the fin" ${MIOPEN_ENABLE_FIN})
 option(MIOPEN_STRIP_SYMBOLS "Strip symbols in release mode" ON)
 
@@ -164,14 +164,14 @@ set(MIOPEN_INSTALL_CXX_HEADERS Off CACHE BOOL "Install MIOpen's C++ header inter
 
 set_var_to_condition(MIOPEN_OFFLINE_COMPILER_PATHS_V2_DEFAULT FALSE)
 option(MIOPEN_OFFLINE_COMPILER_PATHS_V2 "Use rocm-core to find offline GPU compiler" ${MIOPEN_OFFLINE_COMPILER_PATHS_V2_DEFAULT})
-message( STATUS "MIOPEN_OFFLINE_COMPILER_PATHS_V2: ${MIOPEN_OFFLINE_COMPILER_PATHS_V2}" )
+message(STATUS "MIOPEN_OFFLINE_COMPILER_PATHS_V2: ${MIOPEN_OFFLINE_COMPILER_PATHS_V2}")
 
 # Embedded Build Configuration
 set(MIOPEN_EMBED_DB "" CACHE STRING "Semi-colon separated list of architecture to embed on-disk DBs in the binary. Example gfx906_60;gfx900_56")
 if(NOT MIOPEN_EMBED_DB STREQUAL "")
-    option(MIOPEN_DISABLE_SYSDB  "Disable sys database access" Off)
+    option(MIOPEN_DISABLE_SYSDB "Disable sys database access" Off)
 else()
-    option(MIOPEN_DISABLE_SYSDB  "Disable sys database access" ${MIOPEN_EMBED_BUILD})
+    option(MIOPEN_DISABLE_SYSDB "Disable sys database access" ${MIOPEN_EMBED_BUILD})
 endif()
 set(MIOPEN_BINCACHE_PATH "" CACHE STRING "URL or path containing binary cache files to embed")
 option(MIOPEN_EMBED_BINCACHE "Embed Binary Cache or KDB" Off)
@@ -197,20 +197,19 @@ if(MIOPEN_EMBED_BUILD)
     endif()
 endif()
 
-set( MIOPEN_BACKEND ${MIOPEN_DEFAULT_BACKEND} CACHE STRING
+set(MIOPEN_BACKEND ${MIOPEN_DEFAULT_BACKEND} CACHE STRING
     "Which of MIOpens's backends to use?" )
-set_property( CACHE MIOPEN_BACKEND PROPERTY STRINGS
-    OpenCL HIP HIPOC HIPNOGPU)
+set_property(CACHE MIOPEN_BACKEND PROPERTY STRINGS OpenCL HIP HIPOC HIPNOGPU)
     
 # On Windows, internal symbols are only exported when BUILD_TESTING=true. As a result, building driver with BUILD_TESTING=false will result in failure.
 set_var_to_condition(MIOPEN_BUILD_DRIVER_DEFAULT (NOT MIOPEN_EMBED_BUILD) AND (NOT (MIOPEN_BACKEND STREQUAL "HIPNOGPU")) AND ((NOT WIN32) OR BUILD_TESTING))  
 option(MIOPEN_BUILD_DRIVER "Build MIOpenDriver (and use it in tests)" ${MIOPEN_BUILD_DRIVER_DEFAULT})
-message(STATUS "MIOPEN_BUILD_DRIVER: ${MIOPEN_BUILD_DRIVER}" )
+message(STATUS "MIOPEN_BUILD_DRIVER: ${MIOPEN_BUILD_DRIVER}")
 
 # OpenCL 1.2
-if( MIOPEN_BACKEND STREQUAL "OpenCL")
+if(MIOPEN_BACKEND STREQUAL "OpenCL")
     set(MIOPEN_BACKEND_OPENCL 1)
-    find_package( OpenCL REQUIRED )
+    find_package(OpenCL REQUIRED)
     find_program(MIOPEN_HIP_COMPILER clang++
         PATH_SUFFIXES bin
         PATHS
@@ -231,7 +230,7 @@ if( MIOPEN_BACKEND STREQUAL "OpenCL")
     # This is to pass all necessary build flags to HIP compiler
     # for device code compilation. Used within "find_package(hip...".
     # See https://github.com/ROCm-Developer-Tools/HIP/pull/2035#issuecomment-616861118.
-    set (HIP_CXX_COMPILER ${MIOPEN_HIP_COMPILER})
+    set(HIP_CXX_COMPILER ${MIOPEN_HIP_COMPILER})
 endif()
 
 # HIP SDK on Windows does not detect platform correctly, defaulting to "amd"
@@ -240,7 +239,14 @@ if(NOT HIP_PLATFORM AND CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif()
 
 # HIP is always required
-find_package(hip REQUIRED PATHS /opt/rocm)
+if(NOT HIP_PATH)
+  if(WIN32)
+    set(HIP_PATH $ENV{HIP_PATH})
+  else()
+    set(HIP_PATH /opt/rocm)
+  endif()
+endif()
+find_package(hip REQUIRED PATHS ${HIP_PATH})
 message(STATUS "Build with HIP ${hip_VERSION} ${hip_DIR}")
 
 # Override HIP version in config.h, if necessary.
@@ -305,7 +311,7 @@ endforeach()
 # the "Failed to launch kernel: invalid argument" error may happen at run time.
 # References: SWDEV-413293 and https://reviews.llvm.org/D155213 effective HIP_FLAT_VERSION 500723302 on Linux.
 # This may lead to perf drops in the future therefore https://github.com/ROCm/MIOpen/issues/2708 is opened.
-if(HAS_HIP)
+if(HIP_COMPILER)
     # HIP version is unreliable on Windows and on Fedora, so we use compiler flag detection,
     # if this is possible. See issue 2734 and PR 2719.
     check_cxx_compiler_flag("-x hip -fno-offload-uniform-block" MIOPEN_HIP_COMPILER_HAS_OPTION_OFFLOAD_UNIFORM_BLOCK)
@@ -318,7 +324,7 @@ else()
     message(STATUS "MIOPEN_HIP_COMPILER_HAS_OPTION_OFFLOAD_UNIFORM_BLOCK: ${MIOPEN_HIP_COMPILER_HAS_OPTION_OFFLOAD_UNIFORM_BLOCK}")
 endif()
 if(MIOPEN_HIP_COMPILER_HAS_OPTION_OFFLOAD_UNIFORM_BLOCK)
-    string(APPEND HIP_COMPILER_FLAGS " -fno-offload-uniform-block ")
+    string(APPEND HIP_COMPILER_FLAGS "-fno-offload-uniform-block")
 endif()
 
 if(WIN32)
@@ -401,7 +407,7 @@ else()
         message(FATAL_ERROR "HIPRTC cannot be used without HIP backend")
     endif()
 endif()
-message( STATUS "${MIOPEN_BACKEND} backend selected." )
+message(STATUS "${MIOPEN_BACKEND} backend selected.")
 
 # look for and register clang-offload-bundler
 if(MIOPEN_HIP_COMPILER MATCHES ".*clang\\+\\+.*")
@@ -502,7 +508,7 @@ find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS} CONFIG)
 find_path(HALF_INCLUDE_DIR half/half.hpp)
 message(STATUS "HALF_INCLUDE_DIR: ${HALF_INCLUDE_DIR}")
 
-option( MIOPEN_DEBUG_FIND_DB_CACHING "Use system find-db caching" ON)
+option(MIOPEN_DEBUG_FIND_DB_CACHING "Use system find-db caching" ON)
 
 if(WIN32)
     set( DATA_INSTALL_DIR bin )
@@ -824,7 +830,6 @@ enable_cppcheck(
         CPPCHECK=1
         __linux__=1
 )
-
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
