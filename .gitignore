@@ -58,6 +58,7 @@ _doxygen/
 # JetBrains IDE
 .idea/
 cmake-build*/
+build*/
 
 # Python virtualenv
 .venv/
