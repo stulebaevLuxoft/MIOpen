@@ -1,7 +1,6 @@
 # Compiled Object files
-*.slo
-*.lo
 *.o
+*.lo
 *.obj
 
 # Precompiled Headers
@@ -14,11 +13,7 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-
 # Compiled Static libraries
-*.lai
 *.la
 *.a
 *.lib
@@ -28,24 +23,11 @@
 *.out
 *.app
 
-# vim tags
-tags
-.tags
-.*.swp
-
 # Editors
 .vscode
 
 # build-in-source directory
-
-# emacs temporary/backup files
-.\#*
-\#*\#
-*~
-
-# GDB temporary files
-.gdb_history
-install.dir*
+build/
 
 # documentation artifacts
 _build/
@@ -58,7 +40,6 @@ _doxygen/
 # JetBrains IDE
 .idea/
 cmake-build*/
-build*/
 
 # Python virtualenv
 .venv/
