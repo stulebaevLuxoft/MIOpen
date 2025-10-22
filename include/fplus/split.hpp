@@ -6,15 +6,15 @@
 
 #pragma once
 
-#include <fplus/container_common.hpp>
-#include <fplus/container_properties.hpp>
-#include <fplus/generate.hpp>
-#include <fplus/numeric.hpp>
-#include <fplus/pairs.hpp>
-#include <fplus/search.hpp>
+#include "container_common.hpp"
+#include "container_properties.hpp"
+#include "generate.hpp"
+#include "numeric.hpp"
+#include "pairs.hpp"
+#include "search.hpp"
 
-#include <fplus/internal/invoke.hpp>
-#include <fplus/internal/split.hpp>
+#include "internal/invoke.hpp"
+#include "internal/split.hpp"
 
 namespace fplus {
 

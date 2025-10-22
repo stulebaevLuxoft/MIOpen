@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <fplus/function_traits.hpp>
-#include <fplus/internal/apply.hpp>
-#include <fplus/internal/asserts/composition.hpp>
-#include <fplus/internal/asserts/functions.hpp>
-#include <fplus/internal/composition.hpp>
+#include "function_traits.hpp"
+#include "internal/apply.hpp"
+#include "internal/asserts/composition.hpp"
+#include "internal/asserts/functions.hpp"
+#include "internal/composition.hpp"
 
 #include <functional>
 #include <map>

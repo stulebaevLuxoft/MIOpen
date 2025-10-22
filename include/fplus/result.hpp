@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <fplus/function_traits.hpp>
-#include <fplus/maybe.hpp>
+#include "function_traits.hpp"
+#include "maybe.hpp"
 
-#include <fplus/internal/asserts/functions.hpp>
-#include <fplus/internal/composition.hpp>
-#include <fplus/internal/invoke.hpp>
+#include "internal/asserts/functions.hpp"
+#include "internal/composition.hpp"
+#include "internal/invoke.hpp"
 
 #include <cassert>
 #include <functional>

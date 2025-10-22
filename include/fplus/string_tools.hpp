@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <fplus/replace.hpp>
-#include <fplus/split.hpp>
-#include <fplus/transform.hpp>
+#include "replace.hpp"
+#include "split.hpp"
+#include "transform.hpp"
 
 #include <cctype>
 #include <locale>

@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <fplus/composition.hpp>
-#include <fplus/filter.hpp>
+#include "composition.hpp"
+#include "filter.hpp"
 
-#include <fplus/internal/asserts/functions.hpp>
+#include "internal/asserts/functions.hpp"
 
 namespace fplus {
 

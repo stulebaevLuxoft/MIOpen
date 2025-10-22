@@ -20,7 +20,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include <fplus/internal/invoke.hpp>
+#include "internal/invoke.hpp"
 
 namespace fplus {
 

@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <fplus/compare.hpp>
-#include <fplus/container_common.hpp>
-#include <fplus/split.hpp>
+#include "compare.hpp"
+#include "container_common.hpp"
+#include "split.hpp"
 
 namespace fplus {
 

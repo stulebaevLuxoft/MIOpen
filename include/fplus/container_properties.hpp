@@ -6,16 +6,16 @@
 
 #pragma once
 
-#include <fplus/compare.hpp>
-#include <fplus/composition.hpp>
-#include <fplus/container_common.hpp>
-#include <fplus/generate.hpp>
-#include <fplus/maybe.hpp>
-#include <fplus/numeric.hpp>
-#include <fplus/search.hpp>
-#include <fplus/sets.hpp>
+#include "compare.hpp"
+#include "composition.hpp"
+#include "container_common.hpp"
+#include "generate.hpp"
+#include "maybe.hpp"
+#include "numeric.hpp"
+#include "search.hpp"
+#include "sets.hpp"
 
-#include <fplus/internal/invoke.hpp>
+#include "internal/invoke.hpp"
 
 #include <algorithm>
 #include <cstdint>

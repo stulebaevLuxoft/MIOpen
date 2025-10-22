@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <fplus/composition.hpp>
-#include <fplus/function_traits.hpp>
+#include "composition.hpp"
+#include "function_traits.hpp"
 
-#include <fplus/internal/asserts/functions.hpp>
-#include <fplus/internal/compare.hpp>
-#include <fplus/internal/invoke.hpp>
+#include "internal/asserts/functions.hpp"
+#include "internal/compare.hpp"
+#include "internal/invoke.hpp"
 
 namespace fplus {
 

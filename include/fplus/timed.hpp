@@ -1,14 +1,14 @@
 #pragma once
 
-#include <chrono>
-#include <fplus/container_common.hpp>
-#include <fplus/function_traits.hpp>
-#include <fplus/internal/asserts/composition.hpp>
-#include <fplus/internal/composition.hpp>
-#include <fplus/show.hpp>
-#include <fplus/stopwatch.hpp>
-#include <type_traits>
+#include "container_common.hpp"
+#include "function_traits.hpp"
+#include "show.hpp"
+#include "stopwatch.hpp"
+#include "internal/asserts/composition.hpp"
+#include "internal/composition.hpp"
 
+#include <chrono>
+#include <type_traits>
 #include <cassert>
 #include <exception>
 #include <functional>

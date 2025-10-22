@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <fplus/composition.hpp>
-#include <fplus/container_common.hpp>
-#include <fplus/container_properties.hpp>
-#include <fplus/pairs.hpp>
+#include "composition.hpp"
+#include "container_common.hpp"
+#include "container_properties.hpp"
+#include "pairs.hpp"
 
-#include <fplus/internal/invoke.hpp>
+#include "internal/invoke.hpp"
 
 #include <map>
 #include <unordered_map>

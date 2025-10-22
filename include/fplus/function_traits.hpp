@@ -25,7 +25,7 @@ the standard library.
 #include <tuple>
 #include <type_traits>
 
-#include <fplus/internal/meta.hpp>
+#include "internal/meta.hpp"
 
 namespace fplus {
 

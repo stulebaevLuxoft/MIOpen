@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <fplus/compare.hpp>
-#include <fplus/function_traits.hpp>
-#include <fplus/internal/asserts/composition.hpp>
-#include <fplus/internal/composition.hpp>
+#include "compare.hpp"
+#include "function_traits.hpp"
+#include "internal/asserts/composition.hpp"
+#include "internal/composition.hpp"
 
 #include <cassert>
 #include <exception>

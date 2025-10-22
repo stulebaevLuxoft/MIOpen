@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <fplus/compare.hpp>
-#include <fplus/composition.hpp>
-#include <fplus/container_traits.hpp>
-#include <fplus/maybe.hpp>
+#include "compare.hpp"
+#include "composition.hpp"
+#include "container_traits.hpp"
+#include "maybe.hpp"
 
-#include <fplus/internal/container_common.hpp>
-#include <fplus/internal/invoke.hpp>
-#include <fplus/internal/meta.hpp>
+#include "internal/container_common.hpp"
+#include "internal/invoke.hpp"
+#include "internal/meta.hpp"
 
 #include <algorithm>
 #include <cassert>

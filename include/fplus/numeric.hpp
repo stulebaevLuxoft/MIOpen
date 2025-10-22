@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <fplus/container_common.hpp>
-#include <fplus/function_traits.hpp>
-#include <fplus/internal/invoke.hpp>
-#include <fplus/pairs.hpp>
+#include "container_common.hpp"
+#include "function_traits.hpp"
+#include "internal/invoke.hpp"
+#include "pairs.hpp"
 
 #include <algorithm>
 #include <cmath>
