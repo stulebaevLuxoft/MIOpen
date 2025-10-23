@@ -10,32 +10,22 @@
 
 # Compiled Dynamic libraries
 *.so
-*.dylib
 *.dll
 
 # Compiled Static libraries
-*.la
 *.a
+*.la
 *.lib
 
 # Executables
 *.exe
 *.out
-*.app
 
 # Editors
 .vscode
 
 # build-in-source directory
 build/
-
-# documentation artifacts
-_build/
-_images/
-_static/
-_templates/
-_toc.yml
-_doxygen/
 
 # JetBrains IDE
 .idea/

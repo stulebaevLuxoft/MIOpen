@@ -71,8 +71,11 @@ if(NOT WIN32)
     set(CMAKE_INSTALL_PREFIX "/opt/rocm" CACHE PATH "")
 endif()
 
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+if(WIN32)
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake.win)
+    list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake.win)
+endif()
 include(rocm-path)
 
 project( MIOpen CXX )
@@ -119,8 +122,6 @@ set(MIOPEN_LOG_FUNC_TIME_ENABLE Off CACHE BOOL "")
 set(MIOPEN_ENABLE_SQLITE_BACKOFF On CACHE BOOL "")
 
 option(BUILD_DEV "Build for development only" OFF)
-option(MIOPEN_ENABLE_FIN "Enable the fin driver for MIOpen" OFF)
-option(MIOPEN_ENABLE_FIN_INTERFACE "Enable internal interface for the fin" ${MIOPEN_ENABLE_FIN})
 option(MIOPEN_STRIP_SYMBOLS "Strip symbols in release mode" ON)
 
 option(MIOPEN_INCBIN "Include kernels using incbin" OFF)
@@ -158,7 +159,7 @@ else()
     set(MIOPEN_DEFAULT_BACKEND "OpenCL")
 endif()
 
-if(NOT MIOPEN_WORKAROUND_USE_BOOST_FILESYSTEM)
+if(NOT WIN32 AND NOT MIOPEN_WORKAROUND_USE_BOOST_FILESYSTEM)
     include(CheckCXXLinkerFlag)
     check_cxx_linker_flag(-lstdc++fs HAS_LIB_STD_FILESYSTEM)
 endif()
@@ -496,7 +497,7 @@ if(MIOPEN_USE_HIPRTC)
     message(STATUS "Build with hiprtc ${hiprtc_VERSION} ${hiprtc_DIR}")
 endif()
 
-find_path(HALF_INCLUDE_DIR half/half.hpp HINTS ./include)
+find_path(HALF_INCLUDE_DIR half/half.hpp)
 message(STATUS "HALF_INCLUDE_DIR: ${HALF_INCLUDE_DIR}")
 
 option(MIOPEN_DEBUG_FIND_DB_CACHING "Use system find-db caching" ON)
@@ -599,7 +600,7 @@ endif()
 
 set(KERNELS_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src/kernels)
 
-find_program(UNZIPPER bzip2 REQUIRED HINTS ./bin)
+find_program(UNZIPPER bzip2 REQUIRED)
 file(MAKE_DIRECTORY ${KERNELS_BINARY_DIR})
 
 add_custom_target(generate_kernels ALL)
@@ -838,9 +839,4 @@ endif()
 if(BUILD_TESTING)
     add_subdirectory(test)
     add_subdirectory(speedtests)
-endif()
-
-add_subdirectory(utils)
-if(MIOPEN_ENABLE_FIN)
-    add_subdirectory(fin)
 endif()
